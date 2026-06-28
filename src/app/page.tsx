@@ -1,4 +1,6 @@
 import Header from "./components/Header";
+import ProductCard from "./components/ProductCard";
+import perfumes from "./data/perfumes";
 
 export default function Home() {
   return (
@@ -17,7 +19,7 @@ export default function Home() {
           </h2>
 
           <p className="max-w-xl mt-8 text-gray-600 text-lg">
-            رایحه‌هایی ماندگار از برترین خانه‌های عطرسازی جهان
+            رایحه‌ای ماندگار از برترین عطرسازهای جهان
           </p>
 
           <div className="flex gap-4 mt-10">
@@ -38,6 +40,25 @@ export default function Home() {
           </div>
 
         </section>
+        <section className="max-w-7xl mx-auto px-6 py-20">
+
+  <h2 className="text-4xl font-bold text-center text-green-900 mb-12">
+    محصولات منتخب
+  </h2>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+    {perfumes.map((perfume) => (
+      <ProductCard
+        key={perfume.id}
+        name={perfume.name}
+        brand={perfume.brand}
+      />
+    ))}
+
+  </div>
+
+</section>
       </main>
     </>
   );
