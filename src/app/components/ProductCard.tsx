@@ -1,32 +1,50 @@
-type Product = {
-  name: string;
-  brand: string;
-};
+import Image from "next/image";
 
-export default function ProductCard({ name, brand }: Product) {
+export default function ProductCard({ perfume }: any) {
   return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 text-center border border-gray-100">
+    <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden border border-green-100">
 
-      <div className="w-24 h-24 mx-auto rounded-full bg-green-100 flex items-center justify-center text-4xl">
-        🧴
+      <div className="flex justify-center bg-gradient-to-b from-green-50 to-white p-6">
+        <Image
+          src={perfume.image}
+          alt={perfume.name}
+          width={180}
+          height={180}
+          className="object-contain h-56 hover:scale-105 transition duration-300"
+        />
       </div>
 
-      <h3 className="mt-5 text-xl font-bold text-green-900">
-        {name}
-      </h3>
+      <div className="p-5 text-center">
 
-      <p className="text-gray-500 mt-2">
-        {brand}
-      </p>
+        <h3 className="text-2xl font-bold text-green-900">
+          {perfume.name}
+        </h3>
 
-      <a
-        href="https://wa.me/989228595633"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block mt-6 bg-green-800 hover:bg-green-900 text-white px-6 py-2 rounded-full transition"
-      >
-        سفارش
-      </a>
+        <p className="text-gray-800 font-medium mt-1">
+          {perfume.brand}
+        </p>
+
+        <div className="mt-4 space-y-2 text-base text-gray-900">
+
+          <p>
+            <span className="font-bold">مناسب برای:</span> {perfume.gender}
+          </p>
+
+          <p>
+            <span className="font-bold">ماندگاری:</span> {perfume.longevity}
+          </p>
+
+          <p>
+            <span className="font-bold">پخش بو:</span> {perfume.sillage}
+          </p>
+
+        </div>
+
+        <button className="mt-6 w-full bg-green-800 hover:bg-green-900 text-white py-3 rounded-xl transition">
+          مشاهده جزئیات
+        </button>
+
+      </div>
 
     </div>
   );
