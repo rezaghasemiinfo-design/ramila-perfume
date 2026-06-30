@@ -2,46 +2,109 @@ import Image from "next/image";
 
 export default function ProductCard({ perfume }: any) {
   return (
-    <div className="bg-white rounded-3xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden border border-green-100">
+    <div className="bg-white rounded-[30px] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-[#E8E3D8]">
 
-      <div className="flex justify-center bg-gradient-to-b from-green-50 to-white p-6">
+      {/* Image */}
+
+      <div className="bg-gradient-to-b from-[#F8F6F1] to-white flex justify-center p-8">
+
         <Image
           src={perfume.image}
           alt={perfume.name}
-          width={180}
-          height={180}
-          className="object-contain h-56 hover:scale-105 transition duration-300"
+          width={220}
+          height={220}
+          className="object-contain h-64 transition duration-300 hover:scale-105"
         />
+
       </div>
 
-      <div className="p-5 text-center">
+      {/* Content */}
 
-        <h3 className="text-2xl font-bold text-green-900">
+      <div className="p-6 text-center">
+
+        <span className="inline-block text-xs font-semibold tracking-widest text-[#7A8F66] uppercase border border-[#D9D2C3] rounded-full px-4 py-1 mb-4">
+          Premium Essence
+        </span>
+
+        <h3 className="text-2xl font-bold text-[#173F2E]">
           {perfume.name}
         </h3>
 
-        <p className="text-gray-800 font-medium mt-1">
+        <p className="text-gray-700 mt-2 font-medium">
           {perfume.brand}
         </p>
 
-        <div className="mt-4 space-y-2 text-base text-gray-900">
+        <div className="mt-6 space-y-3 text-[15px] text-gray-800 text-right">
 
           <p>
-            <span className="font-bold">مناسب برای:</span> {perfume.gender}
+            <strong>مناسب برای:</strong> {perfume.gender}
           </p>
 
           <p>
-            <span className="font-bold">ماندگاری:</span> {perfume.longevity}
+            <strong>نت آغازین:</strong> {perfume.top}
           </p>
 
           <p>
-            <span className="font-bold">پخش بو:</span> {perfume.sillage}
+            <strong>نت میانی:</strong> {perfume.middle}
+          </p>
+
+          <p>
+            <strong>نت پایه:</strong> {perfume.base}
           </p>
 
         </div>
 
-        <button className="mt-6 w-full bg-green-800 hover:bg-green-900 text-white py-3 rounded-xl transition">
+        {/* Rating */}
+
+        <div className="mt-6 space-y-3">
+
+          <div className="flex justify-between items-center">
+
+            <span className="text-gray-700">
+              ماندگاری
+            </span>
+
+            <span className="text-[#C9A227] text-xl">
+              ★★★★★
+            </span>
+
+          </div>
+
+          <div className="flex justify-between items-center">
+
+            <span className="text-gray-700">
+              پخش بو
+            </span>
+
+            <span className="text-[#C9A227] text-xl">
+              ★★★★★
+            </span>
+
+          </div>
+
+        </div>
+
+        {/* Sizes */}
+
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+
+          {["10ml","20ml","30ml","50ml","100ml"].map((size) => (
+
+            <span
+              key={size}
+              className="px-3 py-1 rounded-full bg-[#F4F1EA] text-[#173F2E] text-sm"
+            >
+              {size}
+            </span>
+
+          ))}
+
+        </div>
+
+        <button className="mt-8 w-full bg-[#173F2E] hover:bg-[#0F2D21] text-white py-3 rounded-2xl transition">
+
           مشاهده جزئیات
+
         </button>
 
       </div>
