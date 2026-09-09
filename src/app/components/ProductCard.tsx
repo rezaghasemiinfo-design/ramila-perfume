@@ -2,110 +2,141 @@ import Image from "next/image";
 
 export default function ProductCard({ perfume }: any) {
   return (
-    <div className="bg-white rounded-[30px] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-[#E8E3D8]">
+    <div className="h-full flex flex-col bg-white rounded-2xl border border-[#E8E2D8] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden">
 
-      {/* Image */}
+      {/* Product Image */}
 
-      <div className="bg-gradient-to-b from-[#F8F6F1] to-white flex justify-center p-8">
+      <div className="h-48 flex items-center justify-center bg-gradient-to-b from-[#F8F6F1] to-white px-5 pt-5">
 
         <Image
           src={perfume.image}
           alt={perfume.name}
-          width={220}
-          height={220}
-          className="object-contain h-64 transition duration-300 hover:scale-105"
+          width={160}
+          height={160}
+          className="h-40 w-auto object-contain transition-transform duration-300 hover:scale-105"
         />
 
       </div>
 
-      {/* Content */}
+      {/* Card Content */}
 
-      <div className="p-6 text-center">
+      <div className="flex flex-col flex-1 px-5 pb-5 text-center">
 
-        <span className="inline-block text-xs font-semibold tracking-widest text-[#7A8F66] uppercase border border-[#D9D2C3] rounded-full px-4 py-1 mb-4">
-          Premium Essence
+        {/* Badge */}
+
+        <span className="self-center mt-3 text-[10px] font-semibold tracking-[2px] text-[#8A7447] border border-[#D9CFB7] rounded-full px-3 py-1">
+          PREMIUM ESSENCE
         </span>
 
-        <h3 className="text-2xl font-bold text-[#173F2E]">
+        {/* Name */}
+
+        <h3 className="mt-3 text-xl font-bold text-[#173F2E] leading-6">
           {perfume.name}
         </h3>
 
-        <p className="text-gray-700 mt-2 font-medium">
+        {/* Brand */}
+
+        <p className="mt-1 text-sm text-gray-600">
           {perfume.brand}
         </p>
 
-        <div className="mt-6 space-y-3 text-[15px] text-gray-800 text-right">
+        {/* Variable Information */}
+
+        <div
+          dir="rtl"
+          className="mt-4 space-y-1.5 text-[13px] leading-6 text-gray-800 text-right"
+        >
 
           <p>
-            <strong>مناسب برای:</strong> {perfume.gender}
+            <span className="font-bold">
+              مناسب برای:
+            </span>{" "}
+            {perfume.gender}
           </p>
 
           <p>
-            <strong>نت آغازین:</strong> {perfume.top}
+            <span className="font-bold">
+              نت آغازین:
+            </span>{" "}
+            {perfume.top}
           </p>
 
           <p>
-            <strong>نت میانی:</strong> {perfume.middle}
+            <span className="font-bold">
+              نت میانی:
+            </span>{" "}
+            {perfume.middle}
           </p>
 
           <p>
-            <strong>نت پایه:</strong> {perfume.base}
+            <span className="font-bold">
+              نت پایه:
+            </span>{" "}
+            {perfume.base}
           </p>
 
         </div>
 
-        {/* Rating */}
+        {/* Fixed Bottom Area */}
 
-        <div className="mt-6 space-y-3">
+        <div className="mt-auto pt-5">
 
-          <div className="flex justify-between items-center">
+          {/* Ratings */}
 
-            <span className="text-gray-700">
-              ماندگاری
-            </span>
+          <div className="space-y-1.5 text-[13px]">
 
-            <span className="text-[#C9A227] text-xl">
-              ★★★★★
-            </span>
+            <div className="flex items-center justify-between">
+
+              <span className="text-gray-700">
+                ماندگاری
+              </span>
+
+              <span className="text-[#C99A18] tracking-[1px]">
+                {perfume.longevity}
+              </span>
+
+            </div>
+
+            <div className="flex items-center justify-between">
+
+              <span className="text-gray-700">
+                پخش بو
+              </span>
+
+              <span className="text-[#C99A18] tracking-[1px]">
+                {perfume.sillage}
+              </span>
+
+            </div>
 
           </div>
 
-          <div className="flex justify-between items-center">
+          {/* Volumes */}
 
-            <span className="text-gray-700">
-              پخش بو
-            </span>
+          <div className="mt-4 flex flex-wrap justify-center gap-1.5">
 
-            <span className="text-[#C9A227] text-xl">
-              ★★★★★
-            </span>
+            {perfume.volume.map((size: string) => (
+
+              <span
+                key={size}
+                className="bg-[#F4F1EA] text-[#173F2E] rounded-full px-2.5 py-1 text-[11px]"
+              >
+                {size}
+              </span>
+
+            ))}
 
           </div>
 
-        </div>
+          {/* Details Button */}
 
-        {/* Sizes */}
+          <button className="mt-5 w-full bg-[#173F2E] hover:bg-[#0F2D21] text-white text-sm font-medium py-2.5 rounded-xl transition">
 
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+            مشاهده جزئیات
 
-          {["10ml","20ml","30ml","50ml","100ml"].map((size) => (
-
-            <span
-              key={size}
-              className="px-3 py-1 rounded-full bg-[#F4F1EA] text-[#173F2E] text-sm"
-            >
-              {size}
-            </span>
-
-          ))}
+          </button>
 
         </div>
-
-        <button className="mt-8 w-full bg-[#173F2E] hover:bg-[#0F2D21] text-white py-3 rounded-2xl transition">
-
-          مشاهده جزئیات
-
-        </button>
 
       </div>
 
