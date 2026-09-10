@@ -3,7 +3,6 @@ import Image from "next/image";
 export default function Hero() {
 return ( <section className="relative">
 
-```
   {/* Hero Banner */}
 
   <div className="relative w-full h-auto md:h-[450px] aspect-[4/5] md:aspect-auto">
