@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Search, MessageCircle, X } from "lucide-react";
+import { Search, MessageCircle, X, UserRound } from "lucide-react";
 import { useState } from "react";
 import perfumes from "../data/perfumes";
 
@@ -28,11 +28,9 @@ perfume.description,
 .join(" ")
 .toLowerCase();
 
-
       return searchableText.includes(normalizedSearch);
     })
   : [];
-
 
 return ( <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[#ECE6DA] shadow-sm">
 
@@ -66,7 +64,7 @@ return ( <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b
 
     {/* Menu */}
 
-    <nav className="hidden lg:flex items-center gap-8 mr-0">
+    <nav className="hidden lg:flex items-center gap-8">
 
       <Link
         href="/"
@@ -100,7 +98,17 @@ return ( <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b
 
     {/* Right Icons */}
 
-    <div className="flex items-center gap-4 md:gap-6">
+    <div className="flex items-center gap-3 md:gap-5">
+
+      {/* User / Login */}
+
+      <Link
+        href="/login"
+        aria-label="ورود به حساب کاربری"
+        className="text-[#173F2E] hover:text-[#9A8456] transition"
+      >
+        <UserRound size={25} strokeWidth={1.8} />
+      </Link>
 
       {/* Search */}
 
@@ -162,7 +170,7 @@ return ( <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b
 
         </div>
 
-        {/* Results */}
+        {/* Search Results */}
 
         {normalizedSearch.length > 0 && (
           <div className="mt-3 max-h-80 overflow-y-auto rounded-2xl border border-[#ECE6DA] bg-white">
