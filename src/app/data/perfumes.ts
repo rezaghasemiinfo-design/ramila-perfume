@@ -2,6 +2,7 @@ const perfumes = [
   {
     id: "bleu-de-chanel",
     name: "Bleu de Chanel",
+    persianName: "بلو شنل",
     brand: "Chanel",
     image: "/images/perfumes/bleu.png",
     gender: "آقایان",
@@ -22,6 +23,7 @@ const perfumes = [
   {
     id: "amouage-purpose",
     name: "Amouage Purpose",
+    persianName: "آمواج پرپوس",
     brand: "Amouage",
     image: "/images/perfumes/purpose.png",
     gender: "بانوان و آقایان",
@@ -42,6 +44,7 @@ const perfumes = [
   {
     id: "poison-girl",
     name: "Poison Girl",
+    persianName: "پویزن گرل",
     brand: "Dior",
     image: "/images/perfumes/poison.png",
     gender: "بانوان",
@@ -62,6 +65,7 @@ const perfumes = [
   {
     id: "sauvage",
     name: "Sauvage",
+    persianName: "ساواج",
     brand: "Dior",
     image: "/images/perfumes/sauvage.png",
     gender: "آقایان",
@@ -82,6 +86,7 @@ const perfumes = [
   {
     id: "gucci-flora",
     name: "Gucci Flora",
+    persianName: "گوچی فلورا",
     brand: "Gucci",
     image: "/images/perfumes/flora.png",
     gender: "بانوان",
@@ -102,6 +107,7 @@ const perfumes = [
   {
     id: "delina-exclusif",
     name: "Delina Exclusif",
+    persianName: "دلینا اکسکلوسیف",
     brand: "Parfums de Marly",
     image: "/images/perfumes/delina.png",
     gender: "بانوان",
@@ -122,6 +128,7 @@ const perfumes = [
   {
     id: "tom-ford-f-fabulous",
     name: "F* Fabulous",
+    persianName: "فاکینگ فبیولس",
     brand: "Tom Ford",
     image: "/images/perfumes/ffabulous.png",
     gender: "بانوان و آقایان",
@@ -142,6 +149,7 @@ const perfumes = [
   {
     id: "creed-aventus",
     name: "Creed Aventus",
+    persianName: "کرید اونتوس",
     brand: "Creed",
     image: "/images/perfumes/aventus.png",
     gender: "آقایان",

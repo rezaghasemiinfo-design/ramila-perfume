@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProductCard({ perfume }: any) {
   return (
@@ -6,17 +7,23 @@ export default function ProductCard({ perfume }: any) {
 
       {/* Product Image */}
 
-      <div className="h-48 flex items-center justify-center bg-gradient-to-b from-[#F8F6F1] to-white px-5 pt-5">
+      <Link
+        href={`/product/${perfume.id}`}
+        className="block"
+        aria-label={`مشاهده ${perfume.name}`}
+      >
+        <div className="h-48 flex items-center justify-center bg-gradient-to-b from-[#F8F6F1] to-white px-5 pt-5">
 
-        <Image
-          src={perfume.image}
-          alt={perfume.name}
-          width={160}
-          height={160}
-          className="h-40 w-auto object-contain transition-transform duration-300 hover:scale-105"
-        />
+          <Image
+            src={perfume.image}
+            alt={perfume.name}
+            width={160}
+            height={160}
+            className="h-40 w-auto object-contain transition-transform duration-300 hover:scale-105"
+          />
 
-      </div>
+        </div>
+      </Link>
 
       {/* Card Content */}
 
@@ -46,7 +53,6 @@ export default function ProductCard({ perfume }: any) {
           dir="rtl"
           className="mt-4 space-y-1.5 text-[13px] leading-6 text-gray-800 text-right"
         >
-
           <p>
             <span className="font-bold">
               مناسب برای:
@@ -74,7 +80,6 @@ export default function ProductCard({ perfume }: any) {
             </span>{" "}
             {perfume.base}
           </p>
-
         </div>
 
         {/* Fixed Bottom Area */}
@@ -86,7 +91,6 @@ export default function ProductCard({ perfume }: any) {
           <div className="space-y-1.5 text-[13px]">
 
             <div className="flex items-center justify-between">
-
               <span className="text-gray-700">
                 ماندگاری
               </span>
@@ -94,11 +98,9 @@ export default function ProductCard({ perfume }: any) {
               <span className="text-[#C99A18] tracking-[1px]">
                 {perfume.longevity}
               </span>
-
             </div>
 
             <div className="flex items-center justify-between">
-
               <span className="text-gray-700">
                 پخش بو
               </span>
@@ -106,7 +108,6 @@ export default function ProductCard({ perfume }: any) {
               <span className="text-[#C99A18] tracking-[1px]">
                 {perfume.sillage}
               </span>
-
             </div>
 
           </div>
@@ -114,27 +115,24 @@ export default function ProductCard({ perfume }: any) {
           {/* Volumes */}
 
           <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-
             {perfume.volume.map((size: string) => (
-
               <span
                 key={size}
                 className="bg-[#F4F1EA] text-[#173F2E] rounded-full px-2.5 py-1 text-[11px]"
               >
                 {size}
               </span>
-
             ))}
-
           </div>
 
           {/* Details Button */}
 
-          <button className="mt-5 w-full bg-[#173F2E] hover:bg-[#0F2D21] text-white text-sm font-medium py-2.5 rounded-xl transition">
-
+          <Link
+            href={`/product/${perfume.id}`}
+            className="mt-5 w-full bg-[#173F2E] hover:bg-[#0F2D21] text-white text-sm font-medium py-2.5 rounded-xl transition flex items-center justify-center"
+          >
             مشاهده جزئیات
-
-          </button>
+          </Link>
 
         </div>
 
