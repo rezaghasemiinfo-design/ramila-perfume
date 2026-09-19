@@ -354,6 +354,7 @@ setQuantity(Math.max(1, nextQuantity));
 }
 
 function handleAddToCart() {
+  if (!perfume) return;
 const perfumeGrams = Number(perfumeGramsInput);
 const fixativeGrams = Number(fixativeGramsInput);
 
