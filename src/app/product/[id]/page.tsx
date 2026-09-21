@@ -261,13 +261,16 @@ fixativeId,
 ]);
 
 if (!perfume) {
-return ( <main
-     dir="rtl"
-     className="min-h-screen bg-[#F8F6F1] px-4 py-10"
-   > <div className="max-w-6xl mx-auto text-center"> <h1 className="text-2xl font-bold text-[#173F2E]">
-عطر پیدا نشد </h1>
+return (
+  <main
+    dir="rtl"
+    className="min-h-screen bg-[#F8F6F1] px-4 py-10"
+  >
+    <div className="max-w-6xl mx-auto text-center">
+      <h1 className="text-2xl font-bold text-[#173F2E]">
+        عطر پیدا نشد
+      </h1>
 
-```
       <Link
         href="/"
         className="inline-block mt-6 bg-[#173F2E] text-white px-6 py-3 rounded-full"
@@ -277,7 +280,6 @@ return ( <main
     </div>
   </main>
 );
-
 }
 
 const selectedPackaging = packagingOptions.find(
@@ -407,14 +409,18 @@ return a.capacity_ml - b.capacity_ml;
 
 });
 
-return ( <main
+return (
+<main
    dir="rtl"
    className="min-h-screen bg-[#F8F6F1] px-3 py-4 lg:px-6 lg:py-6"
- > <div className="max-w-6xl mx-auto"> <Link
-       href="/"
-       className="inline-block mb-3 text-[#173F2E] font-semibold hover:text-[#9A8456] transition text-sm"
-     >
-← بازگشت به محصولات </Link>
+>
+  <div className="max-w-6xl mx-auto">
+    <Link
+      href="/"
+      className="inline-block mb-3 text-[#173F2E] font-semibold hover:text-[#9A8456] transition text-sm"
+    >
+      ← بازگشت به محصولات
+    </Link>
 
     <div className="bg-white rounded-3xl shadow-md overflow-hidden border border-[#ECE6DA]">
       <div className="grid lg:grid-cols-2 gap-4 lg:gap-6 p-4 lg:p-5">
@@ -501,7 +507,7 @@ return ( <main
           </div>
 
           <div className="mt-3 grid grid-cols-2 gap-3">
-            <div>
+            <div className="pt-5">
               <h2 className="text-sm font-bold text-[#173F2E]">
                 مقدار عطر
               </h2>
@@ -511,6 +517,7 @@ return ( <main
                 inputMode="numeric"
                 minLength={1}
                 value={perfumeGramsInput}
+                onFocus={(event) => event.currentTarget.select()}
                 onChange={(event) =>
                   handlePerfumeGramsChange(event.target.value)
                 }
@@ -525,7 +532,7 @@ return ( <main
 
             <div>
               <h2 className="text-sm font-bold text-[#173F2E]">
-                فیکساتور
+                فیکساتور (برای پخش بو و خط بو بیشتر - نسبت پیشنهادی 4 به 1)
               </h2>
 
               <input
@@ -533,6 +540,7 @@ return ( <main
                 inputMode="numeric"
                 minLength={1}
                 value={fixativeGramsInput}
+                onFocus={(event) => event.currentTarget.select()}
                 onChange={(event) =>
                   handleFixativeGramsChange(event.target.value)
                 }
