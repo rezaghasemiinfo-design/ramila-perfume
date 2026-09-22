@@ -507,7 +507,7 @@ return (
           </div>
 
           <div className="mt-3 grid grid-cols-2 gap-3">
-            <div className="pt-5">
+            <div className="pt-5 pt-[2.5rem] lg:pt-5">
               <h2 className="text-sm font-bold text-[#173F2E]">
                 مقدار عطر
               </h2>
