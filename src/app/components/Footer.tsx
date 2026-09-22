@@ -82,12 +82,12 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://ble.ir/ramillabeautty"
+                href="https://ble.ir/ramillabeauty"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block bg-[#0A7CFF] text-center py-3 rounded-full hover:opacity-90 transition"
               >
-                سفارش در بله
+               مشاهده کانال بله
               </a>
 
               <p className="text-[#D8E2D1] pt-2">

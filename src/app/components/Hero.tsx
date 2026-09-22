@@ -65,7 +65,7 @@ return ( <section className="relative">
         </a>
 
         <a
-          href="https://ble.ir/ramillabeautty"
+          href="https://ble.ir/ramillabeauty"
           target="_blank"
           rel="noopener noreferrer"
           className="
@@ -83,7 +83,7 @@ return ( <section className="relative">
             whitespace-nowrap
           "
         >
-          سفارش در بله
+          مشاهده کانال بله
         </a>
 
       </div>
@@ -154,7 +154,7 @@ return ( <section className="relative">
         </a>
 
         <a
-          href="https://ble.ir/ramillabeautty"
+          href="https://ble.ir/ramillabeauty"
           target="_blank"
           rel="noopener noreferrer"
           className="
@@ -172,7 +172,7 @@ return ( <section className="relative">
             whitespace-nowrap
           "
         >
-          سفارش در بله
+          مشاهده کانال بله
         </a>
 
       </div>
