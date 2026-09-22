@@ -552,11 +552,6 @@ return (
                 گرم | صفر یعنی بدون فیکساتور
               </span>
 
-              {fixativeAvailable && fixativeGramsNumber > 0 && (
-                <p className="mt-1 text-[11px] text-gray-700">
-                  {fixativeName}
-                </p>
-              )}
             </div>
           </div>
 
