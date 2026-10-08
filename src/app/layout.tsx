@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ramila Perfume",
+  title: "8671124",
   description:
     "رامیلا پرفیوم | عطرهای باکیفیت از برترین شرکت‌های عطرسازی جهان",
   other: {
