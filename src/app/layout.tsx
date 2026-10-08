@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "Ramila Perfume",
   description:
     "رامیلا پرفیوم | عطرهای باکیفیت از برترین شرکت‌های عطرسازی جهان",
+  other: {
+    enamad: "8671124",
+  },
 };
 
 export default function RootLayout({
