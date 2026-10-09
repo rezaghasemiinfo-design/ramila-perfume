@@ -97,6 +97,24 @@ return (
 
     </div>
 
+    {/* Enamad Trust Seal */}
+
+    <div className="flex justify-center mt-14">
+      <a
+        referrerPolicy="origin"
+        target="_blank"
+        href="https://trustseal.enamad.ir/?id=6310874&Code=rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
+      >
+        <img
+          referrerPolicy="origin"
+          src="https://trustseal.enamad.ir/logo.aspx?id=6310874&Code=rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
+          alt="نماد اعتماد الکترونیکی"
+          style={{ cursor: "pointer" }}
+          code="rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
+        />
+      </a>
+    </div>
+
     <div className="border-t border-[#315744] mt-14 pt-8 text-center text-[#D8E2D1] text-sm">
 
       © 2025 Ramila Perfume — تمامی حقوق محفوظ است.
