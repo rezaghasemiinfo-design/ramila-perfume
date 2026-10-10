@@ -108,7 +108,7 @@ return (
         <img
           referrerPolicy="origin"
           src="https://trustseal.enamad.ir/logo.aspx?id=6310874&Code=rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
-          alt="نماد اعتماد الکترونیکی"
+          alt=""
           style={{ cursor: "pointer" }}
           code="rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
         />
