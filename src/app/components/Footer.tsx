@@ -99,20 +99,25 @@ return (
 
     {/* Enamad Trust Seal */}
 
-    <div className="flex justify-center mt-14">
-      <a
-        referrerPolicy="origin"
-        target="_blank"
-        href="https://trustseal.enamad.ir/?id=6310874&Code=rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
-      >
-        <img
-          referrerPolicy="origin"
-          src="https://trustseal.enamad.ir/logo.aspx?id=6310874&Code=rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
-          alt=""
-          style={{ cursor: "pointer" }}
-        />
-      </a>
-    </div>
+    
+<div className="flex justify-center mt-14">
+  <a
+    referrerPolicy="origin"
+    target="_blank"
+    rel="noopener noreferrer"
+    href="https://trustseal.enamad.ir/?id=6310874&Code=rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
+  >
+    <img
+      referrerPolicy="origin"
+      src="https://trustseal.enamad.ir/logo.aspx?id=6310874&Code=rh7NHJPSH3nCnHtZzTAObilA1t7dMsED"
+      alt="نماد اعتماد الکترونیکی رامیلا"
+      width={120}
+      height={120}
+      style={{ cursor: "pointer" }}
+    />
+  </a>
+</div>
+
 
     <div className="border-t border-[#315744] mt-14 pt-8 text-center text-[#D8E2D1] text-sm">
 
