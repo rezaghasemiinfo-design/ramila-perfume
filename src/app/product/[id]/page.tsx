@@ -77,7 +77,7 @@ packaging_type: string | null;
 packaging_capacity_ml: number | null;
 packaging_price: number;
 quantity: number;
-subtotal: number;
+item_subtotal: number;
 };
 
 function formatPrice(value: number) {
@@ -360,7 +360,7 @@ const packagingCapacityError =
 selectedPackaging?.max_fill_grams != null &&
 fillGrams > selectedPackaging.max_fill_grams;
 
-const totalPrice = quote ? quote.subtotal * quantity : 0;
+const totalPrice = quote ? quote.item_subtotal * quantity : 0;
 
 function handlePerfumeGramsChange(value: string) {
 if (!/^\d*$/.test(value)) return;
@@ -455,7 +455,7 @@ addItem({
   supplierCompany: quote.perfume_supplier_company,
   supplierGrade: quote.perfume_supplier_grade,
   quantity,
-  price: quote.subtotal,
+  price: quote.item_subtotal,
 });
 
 setAddedMessage("این ترکیب به سبد خرید اضافه شد.");
