@@ -9,6 +9,18 @@ function formatPrice(value: number) {
   return new Intl.NumberFormat("fa-IR").format(value);
 }
 
+function supplierLabel(company?: string | null, grade?: string | null) {
+  const names: Record<string, string> = {
+    Luzi: "لوزی",
+    Givaudan: "جیوادان",
+    Parfarome: "پارفاروم",
+    Aromax: "آرومکس",
+    Yuro: "یورو",
+  };
+  const supplier = company ? names[company] ?? company : "";
+  return grade ? `${supplier} — ${grade}` : supplier;
+}
+
 export default function CartPage() {
   const {
     items,
@@ -112,6 +124,13 @@ export default function CartPage() {
                           <strong>عطر:</strong>{" "}
                           {formatPrice(item.perfumeGrams)} گرم
                         </p>
+
+                        {item.supplierCompany && (
+                          <p>
+                            <strong>شرکت و کیفیت:</strong>{" "}
+                            {supplierLabel(item.supplierCompany, item.supplierGrade)}
+                          </p>
+                        )}
 
                         {item.fixativeId && (
                           <p>
