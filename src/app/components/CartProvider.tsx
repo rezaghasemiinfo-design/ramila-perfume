@@ -17,6 +17,9 @@ export type CartItem = {
   perfumeImage: string;
 
   perfumeGrams: number;
+  sourcePriceId?: string | null;
+  supplierCompany?: string | null;
+  supplierGrade?: string | null;
 
   fixativeId: string | null;
   fixativeName: string | null;
@@ -54,6 +57,7 @@ function createItemId(item: AddCartItemInput) {
     item.fixativeId ?? "no-fixative",
     item.fixativeGrams,
     item.packagingId ?? "no-packaging",
+    item.sourcePriceId ?? "no-source",
   ].join("__");
 }
 
