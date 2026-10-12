@@ -17,6 +17,27 @@ name: string;
 brand: string;
 };
 
+type SupplierPrice = {
+id: string;
+perfume_id: string;
+supplier_company: string;
+supplier_grade: string | null;
+source_price_usd_per_kg: number;
+};
+
+function supplierLabel(item: SupplierPrice) {
+const names: Record<string, string> = {
+Luzi: "لوزی",
+Givaudan: "جیوادان",
+Parfarome: "پارفاروم",
+Aromax: "آرومکس",
+Yuro: "یورو",
+};
+const supplier = names[item.supplier_company] ?? item.supplier_company;
+const grade = item.supplier_grade;
+return grade ? `${supplier} — ${grade}` : supplier;
+}
+
 type Fixative = {
 id: string;
 name: string;
@@ -40,6 +61,11 @@ perfume_brand: string;
 perfume_grams: number;
 perfume_price_per_gram: number;
 perfume_total: number;
+perfume_source_price_id: string;
+perfume_supplier_company: string;
+perfume_supplier_grade: string | null;
+perfume_source_price_usd_per_kg: number;
+perfume_usd_toman_rate: number;
 fixative_id: string | null;
 fixative_name: string | null;
 fixative_grams: number;
@@ -75,6 +101,8 @@ const { addItem } = useCart();
 const [fixativeId, setFixativeId] = useState<string | null>(null);
 const [fixativeName, setFixativeName] = useState<string | null>(null);
 const [fixativeAvailable, setFixativeAvailable] = useState(false);
+const [supplierPrices, setSupplierPrices] = useState<SupplierPrice[]>([]);
+const [selectedSourcePriceId, setSelectedSourcePriceId] = useState("");
 
 const [packagingOptions, setPackagingOptions] = useState<Packaging[]>([]);
 const [optionsError, setOptionsError] = useState("");
@@ -167,6 +195,41 @@ loadOptions();
 }, []);
 
 useEffect(() => {
+let cancelled = false;
+async function loadSupplierPrices() {
+  setSupplierPrices([]);
+  setSelectedSourcePriceId("");
+  if (!perfume?.id) return;
+  const supabase = createClient();
+  const { data: dbPerfume, error: perfumeError } = await supabase
+    .from("perfume_products")
+    .select("id")
+    .eq("slug", perfume.id)
+    .eq("is_active", true)
+    .maybeSingle<{ id: string }>();
+  if (cancelled) return;
+  if (perfumeError || !dbPerfume) {
+    setMessage("این عطر هنوز در سیستم فروش ثبت نشده است.");
+    return;
+  }
+  const { data, error } = await supabase
+    .from("perfume_source_prices_usd")
+    .select("id,perfume_id,supplier_company,supplier_grade,source_price_usd_per_kg")
+    .eq("perfume_id", dbPerfume.id)
+    .order("supplier_company")
+    .order("supplier_grade", { ascending: true, nullsFirst: false });
+  if (cancelled) return;
+  if (error) {
+    setMessage("امکان دریافت گزینه‌های تأمین‌کننده وجود ندارد.");
+    return;
+  }
+  setSupplierPrices((data ?? []) as SupplierPrice[]);
+}
+loadSupplierPrices();
+return () => { cancelled = true; };
+}, [perfume?.id]);
+
+useEffect(() => {
 if (!perfume || loadingOptions) return;
 
 const currentPerfume = perfume;
@@ -198,7 +261,7 @@ async function getQuote() {
     return;
   }
 
-  if (!selectedPackagingId) {
+  if (!selectedPackagingId || !selectedSourcePriceId) {
     setQuote(null);
     setLoadingQuote(false);
     return;
@@ -236,6 +299,7 @@ async function getQuote() {
       p_fixative_grams: fixativeGrams,
       p_packaging_id: selectedPackagingId,
       p_quantity: 1,
+      p_perfume_source_price_id: selectedSourcePriceId,
     }
   );
 
@@ -258,6 +322,7 @@ perfumeGramsInput,
 fixativeGramsInput,
 selectedPackagingId,
 fixativeId,
+selectedSourcePriceId,
 ]);
 
 if (!perfume) {
@@ -386,6 +451,9 @@ addItem({
   fixativeGrams: quote.fixative_grams,
   packagingId: quote.packaging_id,
   packagingName: quote.packaging_name,
+  sourcePriceId: quote.perfume_source_price_id,
+  supplierCompany: quote.perfume_supplier_company,
+  supplierGrade: quote.perfume_supplier_grade,
   quantity,
   price: quote.subtotal,
 });
@@ -557,6 +625,34 @@ return (
 
           <div className="mt-3">
             <h2 className="text-sm font-bold text-[#173F2E]">
+              انتخاب شرکت و کیفیت اسانس
+            </h2>
+            <select
+              value={selectedSourcePriceId}
+              onChange={(event) => {
+                setSelectedSourcePriceId(event.target.value);
+                setQuote(null);
+                setMessage("");
+              }}
+              disabled={supplierPrices.length === 0}
+              className="mt-2 w-full rounded-xl border border-[#D9D4C8] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-[#173F2E] disabled:bg-gray-100 disabled:text-gray-500"
+            >
+              <option value="">انتخاب شرکت و کیفیت</option>
+              {supplierPrices.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {supplierLabel(option)} — {formatPrice(option.source_price_usd_per_kg)} دلار / کیلو
+                </option>
+              ))}
+            </select>
+            {supplierPrices.length === 0 && !loadingOptions && (
+              <p className="mt-1 text-amber-700 text-xs">
+                هنوز قیمت تأمین‌کننده‌ای برای این عطر ثبت نشده است.
+              </p>
+            )}
+          </div>
+
+          <div className="mt-3">
+            <h2 className="text-sm font-bold text-[#173F2E]">
               انتخاب شیشه عطر
             </h2>
 
@@ -666,6 +762,17 @@ return (
                   </span>
                 </div>
 
+                <div className="mt-1 flex justify-between gap-3">
+                  <span>شرکت و کیفیت اسانس</span>
+                  <span>{supplierLabel({
+                    id: quote.perfume_source_price_id,
+                    perfume_id: quote.perfume_id,
+                    supplier_company: quote.perfume_supplier_company,
+                    supplier_grade: quote.perfume_supplier_grade,
+                    source_price_usd_per_kg: quote.perfume_source_price_usd_per_kg,
+                  })}</span>
+                </div>
+
                 {quote.fixative_id &&
                   quote.fixative_grams > 0 && (
                     <div className="mt-1 flex justify-between gap-3">
@@ -727,6 +834,7 @@ return (
               loadingOptions ||
               packagingCapacityError ||
               !selectedPackagingId ||
+              !selectedSourcePriceId ||
               !Number.isInteger(Number(perfumeGramsInput)) ||
               Number(perfumeGramsInput) < 8 ||
               Number(perfumeGramsInput) > 1000 ||
