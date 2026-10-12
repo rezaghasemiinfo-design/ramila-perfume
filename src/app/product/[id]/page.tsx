@@ -640,7 +640,7 @@ return (
               <option value="">انتخاب شرکت و کیفیت</option>
               {supplierPrices.map((option) => (
                 <option key={option.id} value={option.id}>
-                  {supplierLabel(option)} — {formatPrice(option.source_price_usd_per_kg)} دلار / کیلو
+                  {supplierLabel(option)}
                 </option>
               ))}
             </select>
