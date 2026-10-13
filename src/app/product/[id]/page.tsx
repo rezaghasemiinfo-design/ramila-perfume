@@ -577,7 +577,7 @@ return (
           <div className="mt-3 grid grid-cols-2 gap-3">
             <div className="pt-5 pt-[2.5rem] lg:pt-5">
               <h2 className="text-sm font-bold text-[#173F2E]">
-                مقدار عطر
+                مقدار پرفیوم
               </h2>
 
               <input
@@ -625,7 +625,7 @@ return (
 
           <div className="mt-3">
             <h2 className="text-sm font-bold text-[#173F2E]">
-              انتخاب شرکت و کیفیت اسانس
+              انتخاب شرکت و کیفیت پرفیوم
             </h2>
             <select
               value={selectedSourcePriceId}
@@ -653,7 +653,7 @@ return (
 
           <div className="mt-3">
             <h2 className="text-sm font-bold text-[#173F2E]">
-              انتخاب شیشه عطر
+              انتخاب ظرف نگهدارنده
             </h2>
 
             <select
@@ -672,7 +672,7 @@ return (
               className="mt-2 w-full rounded-xl border border-[#D9D4C8] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-[#173F2E] disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
             >
               <option value="" disabled>
-                انتخاب شیشه عطر
+                انتخاب ظرف نگهدارنده
               </option>
 
               {sortedPackagingOptions.map((packaging) => (
@@ -695,7 +695,7 @@ return (
 
             {packagingCapacityError && (
               <p className="mt-1 text-red-600 text-xs font-semibold">
-                مقدار عطر و فیکساتور از ظرفیت این شیشه بیشتر است.
+                مقدار پرفیوم و فیکساتور از ظرفیت این شیشه بیشتر است.
               </p>
             )}
           </div>
