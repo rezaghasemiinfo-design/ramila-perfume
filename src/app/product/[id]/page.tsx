@@ -529,12 +529,12 @@ return (
 
             <p>
               <span className="font-bold">ماندگاری:</span>{" "}
-              {perfume.longevity}
+              <span className="text-[#D4AF37]">{perfume.longevity}</span>
             </p>
 
             <p>
               <span className="font-bold">پخش بو:</span>{" "}
-              {perfume.sillage}
+              <span className="text-[#D4AF37]">{perfume.sillage}</span>
             </p>
           </div>
 
