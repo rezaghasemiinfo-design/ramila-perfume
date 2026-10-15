@@ -115,6 +115,7 @@ const [selectedPackagingId, setSelectedPackagingId] = useState<
 string | null
 
 > (null);
+const [isPackagingModalOpen, setIsPackagingModalOpen] = useState(false);
 
 const [quantity, setQuantity] = useState(1);
 
@@ -656,50 +657,85 @@ return (
               انتخاب ظرف نگهدارنده
             </h2>
 
-            <select
-              value={selectedPackagingId ?? ""}
-              onChange={(event) => {
-                setSelectedPackagingId(
-                  event.target.value || null
+            <div className="mt-2 grid grid-cols-3 sm:grid-cols-4 gap-2">
+              {Array.from(
+                new Set(
+                  sortedPackagingOptions
+                    .filter((item) => item.capacity_ml != null)
+                    .map((item) => Number(item.capacity_ml))
+                )
+              ).map((capacity) => {
+                const optionsForCapacity = sortedPackagingOptions.filter(
+                  (item) => Number(item.capacity_ml) === capacity
                 );
-                setQuote(null);
-                setMessage("");
-              }}
-              disabled={
-                loadingOptions ||
-                sortedPackagingOptions.length === 0
-              }
-              className="mt-2 w-full rounded-xl border border-[#D9D4C8] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-[#173F2E] disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
-            >
-              <option value="" disabled>
-                انتخاب ظرف نگهدارنده
-              </option>
-
-              {sortedPackagingOptions.map((packaging) => (
-                <option
-                  key={packaging.id}
-                  value={packaging.id}
+                const selected = optionsForCapacity.some(
+                  (item) => item.id === selectedPackagingId
+                );
+                return (
+                  <button
+                    key={capacity}
+                    type="button"
+                    onClick={() => {
+                      setQuote(null);
+                      setMessage("");
+                      if (capacity === 10) {
+                        setIsPackagingModalOpen(true);
+                      } else {
+                        setSelectedPackagingId(optionsForCapacity[0]?.id ?? null);
+                      }
+                    }}
+                    disabled={loadingOptions || optionsForCapacity.length === 0}
+                    className={`rounded-xl border px-3 py-3 text-sm font-bold transition disabled:opacity-50 ${
+                      selected
+                        ? "border-[#173F2E] bg-[#E8EFE8] text-[#173F2E] ring-1 ring-[#173F2E]"
+                        : "border-[#D9D4C8] bg-white text-gray-900 hover:border-[#173F2E]"
+                    }`}
+                  >
+                    {capacity} میل
+                    {optionsForCapacity.length > 1 && (
+                      <span className="block mt-1 text-[10px] font-medium">انتخاب مدل</span>
+                    )}
+                  </button>
+                );
+              })}
+              {sortedPackagingOptions.some((item) => item.capacity_ml == null) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const pet = sortedPackagingOptions.find((item) => item.capacity_ml == null);
+                    setSelectedPackagingId(pet?.id ?? null);
+                    setQuote(null);
+                    setMessage("");
+                  }}
+                  className={`rounded-xl border px-3 py-3 text-sm font-bold transition ${
+                    selectedPackaging?.capacity_ml == null && selectedPackagingId
+                      ? "border-[#173F2E] bg-[#E8EFE8] text-[#173F2E]"
+                      : "border-[#D9D4C8] bg-white text-gray-900 hover:border-[#173F2E]"
+                  }`}
                 >
-                  {packaging.capacity_ml != null
-                    ? `${packaging.capacity_ml}`
-                    : "پت"}
-                </option>
-              ))}
-            </select>
+                  پت
+                </button>
+              )}
+            </div>
+
+            {selectedPackaging && (
+              <p className="mt-2 text-xs text-[#173F2E] font-semibold">
+                ظرف انتخاب‌شده: {selectedPackaging.name} — {formatPrice(selectedPackaging.selling_price)} تومان
+              </p>
+            )}
 
             {packagingOptions.length === 0 && !loadingOptions && (
               <p className="mt-1 text-red-600 text-xs font-semibold">
-                در حال حاضر شیشه فعالی برای انتخاب در سیستم وجود ندارد.
+                در حال حاضر ظرف فعالی برای انتخاب در سیستم وجود ندارد.
               </p>
             )}
 
             {packagingCapacityError && (
               <p className="mt-1 text-red-600 text-xs font-semibold">
-                مقدار پرفیوم و فیکساتور از ظرفیت این شیشه بیشتر است.
+                مقدار پرفیوم و فیکساتور از ظرفیت این ظرف بیشتر است.
               </p>
             )}
           </div>
-
           <div className="mt-3 flex items-center justify-between rounded-2xl bg-[#F8F6F1] px-4 py-2.5">
             <span className="font-bold text-sm text-gray-900">
               تعداد
@@ -867,7 +903,100 @@ return (
       </div>
     </div>
   </div>
-</main>
+{isPackagingModalOpen && (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="packaging-modal-title"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) setIsPackagingModalOpen(false);
+      }}
+    >
+      <section className="relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-[#D8D0BE] bg-[#FBF9F3] p-4 shadow-2xl sm:p-7">
+        <button
+          type="button"
+          aria-label="بستن پنجره انتخاب ظرف"
+          onClick={() => setIsPackagingModalOpen(false)}
+          className="absolute left-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-[#D9D4C8] bg-white text-2xl text-[#173F2E] hover:bg-[#E8EFE8]"
+        >
+          ×
+        </button>
+        <div className="mb-5 text-center">
+          <p className="text-xs font-semibold tracking-[0.25em] text-[#9A8456]">RAMILA PERFUME</p>
+          <h2 id="packaging-modal-title" className="mt-2 text-xl font-bold text-[#173F2E] sm:text-2xl">
+            انتخاب ظرف نگهدارنده
+          </h2>
+          <span className="mt-2 inline-block rounded-full bg-[#E8EFE8] px-4 py-1.5 text-sm font-bold text-[#173F2E]">۱۰ میلی‌لیتر</span>
+          <p className="mt-2 text-sm text-gray-700">مدل ظرف موردنظرتان را انتخاب کنید.</p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {[
+            {
+              type: "plastic",
+              image: "/images/packaging/10ml-plastic-cap.svg",
+              label: "ظرف درِ پلاستیکی مشکی",
+              price: 50000,
+            },
+            {
+              type: "metal",
+              image: "/images/packaging/10ml-metal-cap.svg",
+              label: "ظرف درِ فلزی",
+              price: 150000,
+            },
+          ].map((choice) => {
+            const option = packagingOptions.find(
+              (item) =>
+                Number(item.capacity_ml) === 10 &&
+                (choice.type === "plastic"
+                  ? item.name.includes("پلاستیکی")
+                  : item.name.includes("فلزی"))
+            );
+            const isSelected = option?.id === selectedPackagingId;
+            return (
+              <article key={choice.type} className={`overflow-hidden rounded-2xl border bg-white p-4 transition ${
+                isSelected ? "border-[#173F2E] ring-2 ring-[#173F2E]/20" : "border-[#D9D4C8]"
+              }`}>
+                <div className="flex h-52 items-center justify-center rounded-xl bg-gradient-to-b from-[#F1F0E9] to-white p-3">
+                  <Image
+                    src={choice.image}
+                    alt={choice.label}
+                    width={150}
+                    height={220}
+                    className="h-full w-auto object-contain"
+                  />
+                </div>
+                <h3 className="mt-4 text-center font-bold text-[#173F2E]">{choice.label}</h3>
+                <p className="mt-1 text-center text-sm text-gray-700">۱۰ میلی‌لیتر</p>
+                <p className="mt-2 text-center text-xl font-bold text-[#173F2E]">{formatPrice(choice.price)} تومان</p>
+                <button
+                  type="button"
+                  disabled={!option}
+                  onClick={() => {
+                    if (!option) {
+                      setMessage("این مدل ظرف هنوز در سیستم قیمت‌گذاری ثبت نشده است.");
+                      return;
+                    }
+                    setSelectedPackagingId(option.id);
+                    setQuote(null);
+                    setMessage("");
+                    setIsPackagingModalOpen(false);
+                  }}
+                  className="mt-4 w-full rounded-full border border-[#C6A65C] bg-[#173F2E] px-4 py-3 font-bold text-white transition hover:bg-[#245C45] disabled:cursor-not-allowed disabled:bg-gray-400"
+                >
+                  {isSelected ? "انتخاب شده" : "انتخاب این ظرف"}
+                </button>
+              </article>
+            );
+          })}
+        </div>
+        <p className="mt-5 rounded-xl bg-[#E8EFE8] px-4 py-3 text-center text-xs leading-6 text-[#173F2E]">
+          هزینه ظرف به قیمت نهایی سفارش اضافه می‌شود.
+        </p>
+      </section>
+    </div>
+  )}
+  </main>
 
 );
 }
