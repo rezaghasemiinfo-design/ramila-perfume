@@ -930,27 +930,48 @@ return (
           <span className="mt-2 inline-block rounded-full bg-[#E8EFE8] px-4 py-1.5 text-sm font-bold text-[#173F2E]">۱۰ میلی‌لیتر</span>
           <p className="mt-2 text-sm text-gray-700">مدل ظرف موردنظرتان را انتخاب کنید.</p>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
-              type: "plastic",
-              image: "/images/packaging/10ml-plastic-cap.svg",
-              label: "ظرف درِ پلاستیکی مشکی",
+              type: "vial-plastic",
+              image: "/images/packaging/10ml-vial-plastic-pump.png",
+              label: "اسپری ویال پمپ پلاستیکی",
               price: 50000,
+              databaseName: "اسپری ویال پمپ پلاستیکی",
             },
             {
-              type: "metal",
-              image: "/images/packaging/10ml-metal-cap.svg",
-              label: "ظرف درِ فلزی",
+              type: "tampo-metal",
+              image: "/images/packaging/10ml-tampo-metal-pump.png",
+              label: "اسپری تامپو پمپ فلزی",
               price: 150000,
+              databaseName: "اسپری تامپو پمپ فلزی",
+            },
+            {
+              type: "book-metal",
+              image: "/images/packaging/10ml-book-metal-pump.png",
+              label: "اسپری کتابی پمپ فلزی",
+              price: 150000,
+              databaseName: "اسپری کتابی پمپ فلزی",
+            },
+            {
+              type: "heart-metal",
+              image: "/images/packaging/10ml-heart-metal-pump.png",
+              label: "اسپری قلبی پمپ فلزی",
+              price: 100000,
+              databaseName: "اسپری قلبی پمپ فلزی",
+            },
+            {
+              type: "angel-plastic",
+              image: "/images/packaging/10ml-angel-plastic-pump.png",
+              label: "اسپری فرشته پمپ پلاستیکی",
+              price: 100000,
+              databaseName: "اسپری فرشته پمپ پلاستیکی",
             },
           ].map((choice) => {
             const option = packagingOptions.find(
               (item) =>
                 Number(item.capacity_ml) === 10 &&
-                (choice.type === "plastic"
-                  ? item.name.includes("پلاستیکی")
-                  : item.name.includes("فلزی"))
+                item.name === choice.databaseName
             );
             const isSelected = option?.id === selectedPackagingId;
             return (
