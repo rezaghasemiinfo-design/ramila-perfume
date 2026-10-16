@@ -116,6 +116,7 @@ string | null
 
 > (null);
 const [isPackagingModalOpen, setIsPackagingModalOpen] = useState(false);
+const [packagingModalCapacity, setPackagingModalCapacity] = useState<number>(10);
 
 const [quantity, setQuantity] = useState(1);
 
@@ -678,7 +679,8 @@ return (
                     onClick={() => {
                       setQuote(null);
                       setMessage("");
-                      if (capacity === 10) {
+                      if (capacity === 10 || capacity === 30) {
+                        setPackagingModalCapacity(capacity);
                         setIsPackagingModalOpen(true);
                       } else {
                         setSelectedPackagingId(optionsForCapacity[0]?.id ?? null);
@@ -927,11 +929,11 @@ return (
           <h2 id="packaging-modal-title" className="mt-2 text-xl font-bold text-[#173F2E] sm:text-2xl">
             انتخاب ظرف نگهدارنده
           </h2>
-          <span className="mt-2 inline-block rounded-full bg-[#E8EFE8] px-4 py-1.5 text-sm font-bold text-[#173F2E]">۱۰ میلی‌لیتر</span>
+          <span className="mt-2 inline-block rounded-full bg-[#E8EFE8] px-4 py-1.5 text-sm font-bold text-[#173F2E]">{packagingModalCapacity} میلی‌لیتر</span>
           <p className="mt-2 text-sm text-gray-700">مدل ظرف موردنظرتان را انتخاب کنید.</p>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {(packagingModalCapacity === 10 ? [
             {
               type: "vial-plastic",
               image: "/images/packaging/10ml-vial-plastic-pump.png",
@@ -967,10 +969,27 @@ return (
               price: 100000,
               databaseName: "اسپری فرشته پمپ پلاستیکی",
             },
-          ].map((choice) => {
+          ] : [
+            { type: "escandal-metal", image: "/images/packaging/30ml-escandal-metal-pump.png", label: "اسکندل پمپ فلزی", price: 285000, databaseName: "اسکندل پمپ فلزی" },
+            { type: "polo-book-metal", image: "/images/packaging/30ml-polo-book-metal-pump.png", label: "پولو کتابی پمپ فلزی", price: 275000, databaseName: "پولو کتابی پمپ فلزی" },
+            { type: "valentino-metal", image: "/images/packaging/30ml-valentino-metal-pump.png", label: "والنتینو پمپ فلزی", price: 285000, databaseName: "والنتینو پمپ فلزی" },
+            { type: "louis-vuitton-metal", image: "/images/packaging/30ml-louis-vuitton-metal-pump.png", label: "لویی ویتون پمپ فلزی", price: 295000, databaseName: "لویی ویتون پمپ فلزی" },
+            { type: "xerjoff-metal", image: "/images/packaging/30ml-xerjoff-metal-pump.png", label: "زرجوف پمپ فلزی", price: 290000, databaseName: "زرجوف پمپ فلزی" },
+            { type: "opus-metal", image: "/images/packaging/30ml-opus-metal-pump.png", label: "اوپوس پمپ فلزی", price: 280000, databaseName: "اوپوس پمپ فلزی" },
+            { type: "kirke-metal", image: "/images/packaging/30ml-kirke-metal-pump.png", label: "کرکه پمپ فلزی", price: 260000, databaseName: "کرکه پمپ فلزی" },
+            { type: "armani-my-way-metal", image: "/images/packaging/30ml-armani-my-way-metal-pump.png", label: "آرمانی مای وی پمپ فلزی", price: 285000, databaseName: "آرمانی مای وی پمپ فلزی" },
+            { type: "coco-noir-metal", image: "/images/packaging/30ml-coco-noir-metal-pump.png", label: "کوکو نویر پمپ فلزی", price: 285000, databaseName: "کوکو نویر پمپ فلزی" },
+            { type: "amouage-metal", image: "/images/packaging/30ml-amouage-metal-pump.png", label: "آمواج پمپ فلزی", price: 295000, databaseName: "آمواج پمپ فلزی" },
+            { type: "marly-clear-metal", image: "/images/packaging/30ml-marly-clear-metal-pump.png", label: "مارلی شفاف پمپ فلزی", price: 280000, databaseName: "مارلی شفاف پمپ فلزی" },
+            { type: "casamorati-metal", image: "/images/packaging/30ml-casamorati-metal-pump.png", label: "کازاموراتی پمپ فلزی", price: 290000, databaseName: "کازاموراتی پمپ فلزی" },
+            { type: "marly-metal", image: "/images/packaging/30ml-marly-metal-pump.png", label: "مارلی پمپ فلزی", price: 285000, databaseName: "مارلی پمپ فلزی" },
+            { type: "sauvage-metal", image: "/images/packaging/30ml-sauvage-metal-pump.png", label: "ساواج پمپ فلزی", price: 280000, databaseName: "ساواج پمپ فلزی" },
+            { type: "acqua-di-metal", image: "/images/packaging/30ml-acqua-di-metal-pump.png", label: "آکوا دی پمپ فلزی", price: 270000, databaseName: "آکوا دی پمپ فلزی" },
+            { type: "miss-dior-metal", image: "/images/packaging/30ml-miss-dior-metal-pump.png", label: "میس دیور پمپ فلزی", price: 285000, databaseName: "میس دیور پمپ فلزی" },
+          ]).map((choice) => {
             const option = packagingOptions.find(
               (item) =>
-                Number(item.capacity_ml) === 10 &&
+                Number(item.capacity_ml) === packagingModalCapacity &&
                 item.name === choice.databaseName
             );
             const isSelected = option?.id === selectedPackagingId;
