@@ -994,10 +994,10 @@ return (
             );
             const isSelected = option?.id === selectedPackagingId;
             return (
-              <article key={choice.type} className={`overflow-hidden rounded-2xl border bg-white p-4 transition ${
+              <article key={choice.type} className={`flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-4 transition ${
                 isSelected ? "border-[#173F2E] ring-2 ring-[#173F2E]/20" : "border-[#D9D4C8]"
               }`}>
-                <div className="flex h-52 items-center justify-center rounded-xl bg-gradient-to-b from-[#F1F0E9] to-white p-1">
+                <div className="flex h-52 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-[#F1F0E9] to-white p-1">
                   <Image
                     src={choice.image}
                     alt={choice.label}
@@ -1006,8 +1006,8 @@ return (
                     className="h-full w-full object-contain"
                   />
                 </div>
-                <h3 className="mt-4 text-center font-bold text-[#173F2E]">{choice.label}</h3>
-                <p className="mt-1 text-center text-sm text-gray-700">۱۰ میلی‌لیتر</p>
+                <h3 className="mt-4 flex min-h-12 items-center justify-center text-center font-bold text-[#173F2E]">{choice.label}</h3>
+                <p className="mt-1 text-center text-sm text-gray-700">{packagingModalCapacity} میلی‌لیتر</p>
                 <p className="mt-2 text-center text-xl font-bold text-[#173F2E]">{formatPrice(choice.price)} تومان</p>
                 <button
                   type="button"
@@ -1022,7 +1022,7 @@ return (
                     setMessage("");
                     setIsPackagingModalOpen(false);
                   }}
-                  className="mt-4 w-full rounded-full border border-[#C6A65C] bg-[#173F2E] px-4 py-3 font-bold text-white transition hover:bg-[#245C45] disabled:cursor-not-allowed disabled:bg-gray-400"
+                  className="mt-auto pt-4 w-full rounded-full border border-[#C6A65C] bg-[#173F2E] px-4 py-3 font-bold text-white transition hover:bg-[#245C45] disabled:cursor-not-allowed disabled:bg-gray-400"
                 >
                   {isSelected ? "انتخاب شده" : "انتخاب این ظرف"}
                 </button>
