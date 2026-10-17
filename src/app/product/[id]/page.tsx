@@ -997,13 +997,13 @@ return (
               <article key={choice.type} className={`overflow-hidden rounded-2xl border bg-white p-4 transition ${
                 isSelected ? "border-[#173F2E] ring-2 ring-[#173F2E]/20" : "border-[#D9D4C8]"
               }`}>
-                <div className="flex h-52 items-center justify-center rounded-xl bg-gradient-to-b from-[#F1F0E9] to-white p-3">
+                <div className="flex h-64 items-center justify-center rounded-xl bg-gradient-to-b from-[#F1F0E9] to-white p-2 sm:h-72">
                   <Image
                     src={choice.image}
                     alt={choice.label}
-                    width={150}
-                    height={220}
-                    className="h-full w-auto object-contain"
+                    width={200}
+                    height={280}
+                    className="h-full max-w-full w-auto object-contain"
                   />
                 </div>
                 <h3 className="mt-4 text-center font-bold text-[#173F2E]">{choice.label}</h3>
