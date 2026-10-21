@@ -129,6 +129,9 @@ const [loadingOptions, setLoadingOptions] = useState(true);
 const [loadingQuote, setLoadingQuote] = useState(false);
 const [message, setMessage] = useState("");
 const [addedMessage, setAddedMessage] = useState("");
+const [customerName, setCustomerName] = useState("");
+const [customerPhone, setCustomerPhone] = useState("");
+const [trackingCode, setTrackingCode] = useState("");
 
 const selectedPerfumeGrams =
 perfumeGramsInput === "" ? 0 : Number(perfumeGramsInput);
@@ -897,9 +900,41 @@ return (
             مشاهده سبد خرید
           </Link>
 
+          <div className="mt-4 rounded-2xl border border-[#D9D4C8] bg-[#F8F6F1] p-4">
+            <h2 className="text-sm font-bold text-[#173F2E]">اطلاعات سفارش‌دهنده (آزمایشی)</h2>
+            <p className="mt-1 text-xs leading-5 text-gray-700">برای اینکه بدانیم سفارش را چه کسی ثبت کرده و بتوانیم پیگیری کنیم، این دو مورد را وارد کنید.</p>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <label className="block text-sm font-semibold text-[#173F2E]">
+                نام و نام خانوادگی
+                <input
+                  type="text"
+                  autoComplete="name"
+                  value={customerName}
+                  onChange={(event) => { setCustomerName(event.target.value); setTrackingCode(""); }}
+                  placeholder="مثلاً محمد رضایی"
+                  className="mt-1 w-full rounded-xl border border-[#D9D4C8] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-[#173F2E]"
+                />
+              </label>
+              <label className="block text-sm font-semibold text-[#173F2E]">
+                شماره موبایل
+                <input
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  value={customerPhone}
+                  onChange={(event) => { setCustomerPhone(event.target.value); setTrackingCode(""); }}
+                  placeholder="مثلاً 0912xxxxxxx"
+                  className="mt-1 w-full rounded-xl border border-[#D9D4C8] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none focus:border-[#173F2E]"
+                />
+              </label>
+            </div>
+          </div>
+
           {(() => {
             const orderMessage = [
               "سلام، برای سفارش از رامیلا پرفیوم پیام می‌دهم:",
+              `نام مشتری: ${customerName.trim() || "ثبت نشده"}`,
+              `شماره تماس مشتری: ${customerPhone.trim() || "ثبت نشده"}`,
               "",
               `عطر: ${quote?.perfume_name ?? perfume.name}`,
               `برند: ${quote?.perfume_brand ?? perfume.brand}`,
@@ -917,7 +952,8 @@ return (
               `تعداد: ${quantity}`,
               `قیمت کل: ${quote ? formatPrice(totalPrice) + " تومان" : "هنوز محاسبه نشده"}`,
             ].join("\n");
-            const canOrder = Boolean(quote && selectedPackaging && !packagingCapacityError && !loadingQuote);
+            const normalizedPhone = customerPhone.replace(/[\\s()-]/g, "");
+            const canOrder = Boolean(quote && selectedPackaging && !packagingCapacityError && !loadingQuote && customerName.trim().length >= 2 && normalizedPhone.replace(/\\D/g, "").length >= 8);
             return (
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <a
@@ -928,7 +964,7 @@ return (
                   onClick={(event) => {
                     if (!canOrder) {
                       event.preventDefault();
-                      setMessage("لطفاً مقدار عطر، ظرف و شرکت اسانس را انتخاب کنید تا قیمت سفارش محاسبه شود.");
+                      setMessage("لطفاً نام، شماره موبایل و همه گزینه‌های سفارش را کامل کنید تا قیمت محاسبه شود.");
                     }
                   }}
                   className={`text-center bg-[#25D366] hover:bg-[#20BD5A] text-white py-3 px-2 rounded-full text-sm font-semibold transition ${!canOrder ? "opacity-50" : ""}`}
@@ -940,21 +976,25 @@ return (
                   disabled={!canOrder}
                   onClick={async () => {
                     if (!canOrder) {
-                      setMessage("لطفاً مقدار عطر، ظرف و شرکت اسانس را انتخاب کنید تا قیمت سفارش محاسبه شود.");
+                      setMessage("لطفاً نام و شماره موبایل را وارد کنید و مقدار عطر، ظرف و شرکت اسانس را کامل انتخاب کنید.");
                       return;
                     }
+                    const orderCode = `RAM-${Date.now().toString().slice(-6)}`;
+                    const messageWithCode = [`کد پیگیری سفارش: ${orderCode}`, "", orderMessage].join("\\n");
                     setMessage("در حال ارسال سفارش به بله...");
+                    setTrackingCode("");
                     try {
                       const response = await fetch("/api/bale-order", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ text: orderMessage }),
+                        body: JSON.stringify({ text: messageWithCode }),
                       });
                       const result = await response.json();
                       if (!response.ok) {
                         throw new Error(result?.error || "ارسال سفارش ناموفق بود.");
                       }
-                      setMessage("سفارش با موفقیت به بله ارسال شد.");
+                      setTrackingCode(orderCode);
+                      setMessage("");
                     } catch (error) {
                       setMessage(error instanceof Error ? error.message : "ارسال سفارش به بله ناموفق بود.");
                     }
@@ -964,6 +1004,32 @@ return (
                   سفارش مستقیم در بله
                 </button>
               </div>
+              {trackingCode && (
+                <div className="mt-3 rounded-2xl border border-green-300 bg-green-50 p-4 text-center">
+                  <p className="font-bold text-green-900">سفارش آزمایشی با موفقیت ارسال شد.</p>
+                  <p className="mt-2 text-sm text-green-900">کد پیگیری شما:</p>
+                  <p className="mt-1 text-xl font-extrabold tracking-wide text-[#173F2E]" dir="ltr">{trackingCode}</p>
+                  <p className="mt-2 text-xs leading-5 text-green-900">این کد را نگه دارید و هنگام پیگیری سفارش اعلام کنید.</p>
+                  <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <a
+                      href={`https://wa.me/989228595633?text=${encodeURIComponent(`سلام، برای پیگیری سفارش ${trackingCode} پیام می‌دهم.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full bg-[#25D366] px-3 py-2.5 text-sm font-bold text-white"
+                    >
+                      پیگیری در واتساپ
+                    </a>
+                    <a
+                      href={`https://ble.ir/RAMILLAbeautty`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full bg-[#239B69] px-3 py-2.5 text-sm font-bold text-white"
+                    >
+                      پیگیری در بله
+                    </a>
+                  </div>
+                </div>
+              )}
             );
           })()}
         </div>
