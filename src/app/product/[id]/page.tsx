@@ -116,6 +116,10 @@ string | null
 
 > (null);
 const [isPackagingModalOpen, setIsPackagingModalOpen] = useState(false);
+const [packagingPreview, setPackagingPreview] = useState<{
+  image: string;
+  label: string;
+} | null>(null);
 const [packagingModalCapacity, setPackagingModalCapacity] = useState<number>(10);
 
 const [quantity, setQuantity] = useState(1);
@@ -997,15 +1001,25 @@ return (
               <article key={choice.type} className={`flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-4 transition ${
                 isSelected ? "border-[#173F2E] ring-2 ring-[#173F2E]/20" : "border-[#D9D4C8]"
               }`}>
-                <div className="flex h-52 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-[#F1F0E9] to-white p-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPackagingPreview({
+                      image: choice.image,
+                      label: choice.label,
+                    });
+                  }}
+                  className="group flex h-52 w-full shrink-0 cursor-zoom-in items-center justify-center rounded-xl bg-gradient-to-b from-[#F1F0E9] to-white p-1"
+                  aria-label={`بزرگ‌نمایی تصویر ${choice.label}`}
+                >
                   <Image
                     src={choice.image}
                     alt={choice.label}
-                    width={280}
-                    height={280}
-                    className="h-full w-full object-contain"
+                    width={500}
+                    height={500}
+                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
-                </div>
+                </button>
                 <h3 className="mt-4 flex min-h-12 items-center justify-center text-center font-bold text-[#173F2E]">{choice.label}</h3>
                 <p className="mt-1 text-center text-sm text-gray-700">{packagingModalCapacity} میلی‌لیتر</p>
                 <p className="mt-2 text-center text-xl font-bold text-[#173F2E]">{formatPrice(choice.price)} تومان</p>
@@ -1034,6 +1048,40 @@ return (
           هزینه ظرف به قیمت نهایی سفارش اضافه می‌شود.
         </p>
       </section>
+    </div>
+  )}
+  {packagingPreview && (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`تصویر بزرگ ${packagingPreview.label}`}
+      onClick={() => setPackagingPreview(null)}
+    >
+      <button
+        type="button"
+        onClick={() => setPackagingPreview(null)}
+        className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white text-3xl text-[#173F2E]"
+        aria-label="بستن تصویر"
+      >
+        ×
+      </button>
+      <div
+        className="flex max-h-[90vh] w-full max-w-4xl flex-col items-center"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <Image
+          src={packagingPreview.image}
+          alt={packagingPreview.label}
+          width={1200}
+          height={1200}
+          sizes="95vw"
+          className="max-h-[80vh] w-auto max-w-full object-contain"
+        />
+        <p className="mt-4 text-center text-lg font-bold text-white">
+          {packagingPreview.label}
+        </p>
+      </div>
     </div>
   )}
   </main>
