@@ -897,14 +897,74 @@ return (
             مشاهده سبد خرید
           </Link>
 
-          <a
-            href="https://wa.me/989228595633"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 text-center bg-[#25D366] hover:bg-[#20BD5A] text-white py-3 rounded-full text-sm font-semibold transition"
-          >
-            سفارش این عطر در واتساپ
-          </a>
+          {/*
+            پیام سفارش بر اساس انتخاب‌های فعلی مشتری ساخته می‌شود.
+            واتساپ متن را در کادر پیام آماده می‌کند؛ بله لینک چت را باز می‌کند
+            و متن سفارش در کلیک روی دکمه کپی می‌شود تا مشتری آن را در بله بچسباند.
+          */}
+          {(() => {
+            const orderMessage = [
+              "سلام، برای سفارش از رامیلـا پرفیوم پیام می‌دهم:",
+              "",
+              `عطر: ${quote?.perfume_name ?? perfume.name}`,
+              `برند: ${quote?.perfume_brand ?? perfume.brand}`,
+              `شرکت و کیفیت اسانس: ${quote ? supplierLabel({
+                id: quote.perfume_source_price_id,
+                perfume_id: quote.perfume_id,
+                supplier_company: quote.perfume_supplier_company,
+                supplier_grade: quote.perfume_supplier_grade,
+                source_price_usd_per_kg: quote.perfume_source_price_usd_per_kg,
+              }) : "انتخاب نشده"}`,
+              `مقدار عطر: ${quote?.perfume_grams ?? perfumeGramsNumber} گرم`,
+              `مقدار فیکساتور: ${quote?.fixative_grams ?? fixativeGramsNumber} گرم`,
+              `ظرف نگهدارنده: ${quote?.packaging_name ?? selectedPackaging?.name ?? "انتخاب نشده"}`,
+              `حجم ظرف: ${selectedPackaging?.capacity_ml != null ? selectedPackaging.capacity_ml + " میلی‌لیتر" : selectedPackaging ? "پت" : "انتخاب نشده"}`,
+              `تعداد: ${quantity}`,
+              `قیمت کل: ${quote ? formatPrice(totalPrice) + " تومان" : "هنوز محاسبه نشده"}`,
+            ].join("\\n");
+            const canOrder = Boolean(quote && selectedPackaging && !packagingCapacityError && !loadingQuote);
+            return (
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <a
+                  href={`https://wa.me/989228595633?text=${encodeURIComponent(orderMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-disabled={!canOrder}
+                  onClick={(event) => {
+                    if (!canOrder) {
+                      event.preventDefault();
+                      setMessage("لطفاً مقدار عطر، ظرف و شرکت اسانس را انتخاب کنید تا قیمت سفارش محاسبه شود.");
+                    }
+                  }}
+                  className={`text-center bg-[#25D366] hover:bg-[#20BD5A] text-white py-3 px-2 rounded-full text-sm font-semibold transition ${!canOrder ? "opacity-50" : ""}`}
+                >
+                  سفارش در واتساپ
+                </a>
+                <a
+                  href="https://ble.ir/RAMILLAbeautty"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-disabled={!canOrder}
+                  onClick={async (event) => {
+                    if (!canOrder) {
+                      event.preventDefault();
+                      setMessage("لطفاً مقدار عطر، ظرف و شرکت اسانس را انتخاب کنید تا قیمت سفارش محاسبه شود.");
+                      return;
+                    }
+                    try {
+                      await navigator.clipboard.writeText(orderMessage);
+                      setMessage("متن سفارش کپی شد؛ در گفت‌وگوی بله آن را بچسبانید و ارسال کنید.");
+                    } catch {
+                      setMessage("گفت‌وگوی بله باز می‌شود؛ اگر متن کپی نشد، سفارش را از واتساپ ارسال کنید.");
+                    }
+                  }}
+                  className={`text-center bg-[#239B69] hover:bg-[#188454] text-white py-3 px-2 rounded-full text-sm font-semibold transition ${!canOrder ? "opacity-50" : ""}`}
+                >
+                  سفارش در بله
+                </a>
+              </div>
+            );
+          })()}
         </div>
       </div>
     </div>
