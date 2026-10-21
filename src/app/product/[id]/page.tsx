@@ -952,8 +952,8 @@ return (
               `تعداد: ${quantity}`,
               `قیمت کل: ${quote ? formatPrice(totalPrice) + " تومان" : "هنوز محاسبه نشده"}`,
             ].join("\n");
-            const normalizedPhone = customerPhone.replace(/[\\s()-]/g, "");
-            const canOrder = Boolean(quote && selectedPackaging && !packagingCapacityError && !loadingQuote && customerName.trim().length >= 2 && normalizedPhone.replace(/\\D/g, "").length >= 8);
+            const normalizedPhone = customerPhone.replace(/[\s()-]/g, "");
+            const canOrder = Boolean(quote && selectedPackaging && !packagingCapacityError && !loadingQuote && customerName.trim().length >= 2 && normalizedPhone.replace(/\D/g, "").length >= 8);
             return (
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <a
