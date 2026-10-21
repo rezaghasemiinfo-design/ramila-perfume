@@ -897,14 +897,9 @@ return (
             مشاهده سبد خرید
           </Link>
 
-          {/*
-            پیام سفارش بر اساس انتخاب‌های فعلی مشتری ساخته می‌شود.
-            واتساپ متن را در کادر پیام آماده می‌کند؛ بله لینک چت را باز می‌کند
-            و متن سفارش در کلیک روی دکمه کپی می‌شود تا مشتری آن را در بله بچسباند.
-          */}
           {(() => {
             const orderMessage = [
-              "سلام، برای سفارش از رامیلـا پرفیوم پیام می‌دهم:",
+              "سلام، برای سفارش از رامیلا پرفیوم پیام می‌دهم:",
               "",
               `عطر: ${quote?.perfume_name ?? perfume.name}`,
               `برند: ${quote?.perfume_brand ?? perfume.brand}`,
@@ -921,7 +916,7 @@ return (
               `حجم ظرف: ${selectedPackaging?.capacity_ml != null ? selectedPackaging.capacity_ml + " میلی‌لیتر" : selectedPackaging ? "پت" : "انتخاب نشده"}`,
               `تعداد: ${quantity}`,
               `قیمت کل: ${quote ? formatPrice(totalPrice) + " تومان" : "هنوز محاسبه نشده"}`,
-            ].join("\\n");
+            ].join("\n");
             const canOrder = Boolean(quote && selectedPackaging && !packagingCapacityError && !loadingQuote);
             return (
               <div className="mt-2 grid grid-cols-2 gap-2">
@@ -940,28 +935,34 @@ return (
                 >
                   سفارش در واتساپ
                 </a>
-                <a
-                  href="https://ble.ir/RAMILLAbeautty"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-disabled={!canOrder}
-                  onClick={async (event) => {
+                <button
+                  type="button"
+                  disabled={!canOrder}
+                  onClick={async () => {
                     if (!canOrder) {
-                      event.preventDefault();
                       setMessage("لطفاً مقدار عطر، ظرف و شرکت اسانس را انتخاب کنید تا قیمت سفارش محاسبه شود.");
                       return;
                     }
+                    setMessage("در حال ارسال سفارش به بله...");
                     try {
-                      await navigator.clipboard.writeText(orderMessage);
-                      setMessage("متن سفارش کپی شد؛ در گفت‌وگوی بله آن را بچسبانید و ارسال کنید.");
-                    } catch {
-                      setMessage("گفت‌وگوی بله باز می‌شود؛ اگر متن کپی نشد، سفارش را از واتساپ ارسال کنید.");
+                      const response = await fetch("/api/bale-order", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ text: orderMessage }),
+                      });
+                      const result = await response.json();
+                      if (!response.ok) {
+                        throw new Error(result?.error || "ارسال سفارش ناموفق بود.");
+                      }
+                      setMessage("سفارش با موفقیت به بله ارسال شد.");
+                    } catch (error) {
+                      setMessage(error instanceof Error ? error.message : "ارسال سفارش به بله ناموفق بود.");
                     }
                   }}
-                  className={`text-center bg-[#239B69] hover:bg-[#188454] text-white py-3 px-2 rounded-full text-sm font-semibold transition ${!canOrder ? "opacity-50" : ""}`}
+                  className={`text-center bg-[#239B69] hover:bg-[#188454] disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-2 rounded-full text-sm font-semibold transition ${!canOrder ? "opacity-50" : ""}`}
                 >
-                  سفارش در بله
-                </a>
+                  سفارش مستقیم در بله
+                </button>
               </div>
             );
           })()}
