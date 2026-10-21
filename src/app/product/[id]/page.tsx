@@ -955,6 +955,7 @@ return (
             const normalizedPhone = customerPhone.replace(/[\s()-]/g, "");
             const canOrder = Boolean(quote && selectedPackaging && !packagingCapacityError && !loadingQuote && customerName.trim().length >= 2 && normalizedPhone.replace(/\D/g, "").length >= 8);
             return (
+              <>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <a
                   href={`https://wa.me/989228595633?text=${encodeURIComponent(orderMessage)}`}
@@ -1030,6 +1031,7 @@ return (
                   </div>
                 </div>
               )}
+              </>
             );
           })()}
         </div>
