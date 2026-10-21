@@ -1,8 +1,21 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-  const token = process.env.BALE_BOT_TOKEN;
+  return NextResponse.json(
+    { ok: false, error: "Use an authenticated POST request to configure the webhook." },
+    { status: 405, headers: { Allow: "POST" } }
+  );
+}
 
+export async function POST(request: NextRequest) {
+  const setupSecret = process.env.BALE_WEBHOOK_SETUP_SECRET;
+  const authorization = request.headers.get("authorization");
+
+  if (!setupSecret || authorization !== `Bearer ${setupSecret}`) {
+    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  const token = process.env.BALE_BOT_TOKEN;
   if (!token) {
     return NextResponse.json(
       { ok: false, error: "BALE_BOT_TOKEN is not configured" },
