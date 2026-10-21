@@ -980,7 +980,7 @@ return (
                       return;
                     }
                     const orderCode = `RAM-${Date.now().toString().slice(-6)}`;
-                    const messageWithCode = [`کد پیگیری سفارش: ${orderCode}`, "", orderMessage].join("\\n");
+                    const messageWithCode = [`کد پیگیری سفارش: ${orderCode}`, "", orderMessage].join("\n");
                     setMessage("در حال ارسال سفارش به بله...");
                     setTrackingCode("");
                     try {
