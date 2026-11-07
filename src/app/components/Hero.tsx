@@ -11,7 +11,6 @@ return ( <section className="relative">
       src="/hero-banner.png"
       alt="Ramila Perfume"
       fill
-      loading="eager"
       sizes="100vw"
       className="object-contain object-center"
     />
